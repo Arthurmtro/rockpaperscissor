@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Belorder Rock Paper Scissors - Home{% endblock %}
+{% block content %}
+  <form action="/create" method="post">
+    <button type="submit">Create New Session</button>
+  </form>
+  <h2>Join Existing Session</h2>
+  <form action="" method="get" onsubmit="location.href='/session/' + this.session_id.value; return false;">
+    <input type="text" name="session_id" placeholder="Session ID" required>
+    <button type="submit">Join</button>
+  </form>
+{% endblock %}

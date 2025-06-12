@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<head>
+  <title>{% block title %}Belorder Rock Paper Scissors{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1 class="logo">Belorder Rock Paper Scissors</h1>
+    {% block content %}{% endblock %}
+  </div>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
