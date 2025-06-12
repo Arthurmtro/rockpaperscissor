@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Session {{ session_id }} - Belorder RPS{% endblock %}
+{% block content %}
+  <h2>Session {{ session_id }}</h2>
+  <form action="{{ url_for('choose', session_id=session_id) }}" method="post" class="choice-form">
+    <input type="text" name="name" placeholder="Your name" required>
+    <div class="choices">
+      <label><input type="radio" name="choice" value="rock" required> Rock</label>
+      <label><input type="radio" name="choice" value="paper"> Paper</label>
+      <label><input type="radio" name="choice" value="scissors"> Scissors</label>
+    </div>
+    <button type="submit">Submit Choice</button>
+  </form>
+  <p class="share">Share this link with your friends:
+    <input id="session-link" type="text" value="{{ request.url }}" readonly>
+    <button id="copy-link" type="button">Copy</button>
+  </p>
+{% endblock %}
+{% block scripts %}
+<script>
+  const nameInput = document.querySelector('input[name="name"]');
+  window.addEventListener('load', () => {
+    const storedName = localStorage.getItem('rps_name');
+    if (storedName) {
+      nameInput.value = storedName;
+    }
+  });
+  document.querySelector('form').addEventListener('submit', () => {
+    localStorage.setItem('rps_name', nameInput.value);
+  });
+  document.getElementById('copy-link').addEventListener('click', () => {
+    const linkInput = document.getElementById('session-link');
+    linkInput.select();
+    document.execCommand('copy');
+  });
+</script>
+{% endblock %}

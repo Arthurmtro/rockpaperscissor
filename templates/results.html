@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Results - {{ session_id }} - Belorder RPS{% endblock %}
+{% block content %}
+  <h2>Results for session {{ session_id }}</h2>
+  <table>
+    <thead><tr><th>Player</th><th>Choice</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <pre id="result"></pre>
+  <p><a href="{{ url_for('session_page', session_id=session_id) }}">Back to choose another</a></p>
+  <p><a href="{{ url_for('index') }}">Home</a></p>
+{% endblock %}
+{% block scripts %}
+<script>
+  async function fetchStatus() {
+    const response = await fetch('{{ url_for('status', session_id=session_id) }}');
+    if (response.ok) {
+      const data = await response.json();
+      const tbody = document.querySelector('tbody');
+      tbody.innerHTML = '';
+      for (const [name, choice] of Object.entries(data.choices)) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${name}</td><td>${choice}</td>`;
+        tbody.appendChild(tr);
+      }
+      const result = document.getElementById('result');
+      if (data.winner_sign === null) {
+        result.textContent = 'Tie';
+      } else {
+        result.textContent = 'Winner sign: ' + data.winner_sign + '\nWinners: ' + data.winners.join(', ');
+      }
+    }
+  }
+  setInterval(fetchStatus, 2000);
+  window.onload = fetchStatus;
+</script>
+{% endblock %}
